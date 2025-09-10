@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Water Bubbly - Cart & Checkout</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="../js/app.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <div class="brand"><img src="../assets/logo.svg" alt="logo"/> Water Bubbly</div>
+      <div class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="products.html">Book Water</a>
+        <a href="orders.html">Orders</a>
+        <a href="profile.html">My Profile</a>
+        <a href="help.html">Help</a>
+        <a href="#" class="btn-outline" onclick="WB.signOut()">Sign out</a>
+      </div>
+    </div>
+  </nav>
+  <main class="container">
+    <div class="card">
+      <h2>Cart</h2>
+      <table class="table" id="cart-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="totals" style="margin-top:12px;">
+        <div><span>Subtotal</span><strong id="subtotal">₹0</strong></div>
+        <div><span>GST (12%)</span><strong id="gst">₹0</strong></div>
+        <div class="grand"><span>Total</span><strong id="grand">₹0</strong></div>
+      </div>
+      <div class="row" style="margin-top:12px;">
+        <a class="btn-outline" href="products.html">Continue Shopping</a>
+        <button class="btn-primary" id="checkout">Confirm Order</button>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">© 2025 Water Bubbly</footer>
+
+  <script>
+    const s = WB.ensureAuthOrRedirect();
+    const phone = s.phone;
+    const tbody = document.querySelector('#cart-table tbody');
+
+    function render() {
+      const cart = WB.getCart(phone);
+      tbody.innerHTML = '';
+      cart.forEach(item => {
+        const tr = document.createElement('tr');
+        const name = WB.nameFor(item.id);
+        const price = WB.priceFor(item.id);
+        tr.innerHTML = `
+          <td>${name}</td>
+          <td>
+            <input type="number" min="0" value="${item.qty}" style="width:80px">
+          </td>
+          <td>₹${price}</td>
+          <td>₹${item.qty * price}</td>
+        `;
+        tr.querySelector('input').addEventListener('change', (e) => {
+          const qty = parseInt(e.target.value || '0', 10);
+          WB.updateQty(phone, item.id, qty);
+          render();
+        });
+        tbody.appendChild(tr);
+      });
+      const totals = WB.computeTotals(cart);
+      document.getElementById('subtotal').textContent = `₹${totals.subtotal}`;
+      document.getElementById('gst').textContent = `₹${totals.gst}`;
+      document.getElementById('grand').textContent = `₹${totals.total}`;
+    }
+
+    document.getElementById('checkout').addEventListener('click', () => {
+      const order = WB.placeOrder(phone);
+      if (!order) { alert('Cart is empty'); return; }
+      alert(`Order placed: ${order.id}`);
+      window.location.href = 'orders.html';
+    });
+
+    render();
+  </script>
+</body>
+</html>
+

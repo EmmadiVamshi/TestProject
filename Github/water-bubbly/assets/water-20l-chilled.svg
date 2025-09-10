@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <rect x="26" y="20" width="68" height="80" rx="14" fill="#d9efff" stroke="#125aa0"/>
+  <rect x="44" y="10" width="32" height="12" rx="4" fill="#125aa0"/>
+  <text x="60" y="92" text-anchor="middle" font-family="Arial" font-size="14" fill="#125aa0">20L Chilled</text>
+  <g fill="#125aa0">
+    <path d="M60 44l3 6h6l-4.5 4 1.7 6-6.2-3.8-6.2 3.8 1.7-6-4.5-4h6z"/>
+  </g>
+</svg>
+

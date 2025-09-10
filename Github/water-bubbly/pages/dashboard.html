@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Water Bubbly - Dashboard</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="../js/app.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <div class="brand"><img src="../assets/logo.svg" alt="logo"/> Water Bubbly</div>
+      <div class="nav-links">
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="products.html">Book Water</a>
+        <a href="orders.html">Orders</a>
+        <a href="profile.html">My Profile</a>
+        <a href="help.html">Help</a>
+        <a href="#" class="btn-outline" onclick="WB.signOut()">Sign out</a>
+      </div>
+    </div>
+  </nav>
+  <main class="container">
+    <div class="card">
+      <h2>Hello, <span id="user-name"></span></h2>
+      <p style="color:#64748b">Quick links</p>
+      <div class="row">
+        <a class="btn-primary" href="products.html">Book Water</a>
+        <a class="btn-outline" href="orders.html">View Orders</a>
+        <a class="btn-outline" href="profile.html">Profile</a>
+        <a class="btn-outline" href="help.html">Help</a>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">© 2025 Water Bubbly</footer>
+
+  <script>
+    const s = WB.ensureAuthOrRedirect();
+    const user = WB.findUserByPhone(s.phone);
+    document.getElementById('user-name').textContent = user?.name || s.phone;
+  </script>
+</body>
+</html>
+

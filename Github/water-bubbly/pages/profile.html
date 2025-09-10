@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Water Bubbly - Profile</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="../js/app.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <div class="brand"><img src="../assets/logo.svg" alt="logo"/> Water Bubbly</div>
+      <div class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="products.html">Book Water</a>
+        <a href="orders.html">Orders</a>
+        <a href="profile.html" class="active">My Profile</a>
+        <a href="help.html">Help</a>
+        <a href="#" class="btn-outline" onclick="WB.signOut()">Sign out</a>
+      </div>
+    </div>
+  </nav>
+  <main class="container">
+    <div class="card" style="max-width:720px; margin: 0 auto;">
+      <h2>My Profile</h2>
+      <form id="profile-form">
+        <div class="row">
+          <div class="grow">
+            <label>Name</label>
+            <input id="name" required>
+          </div>
+          <div class="grow">
+            <label>Email</label>
+            <input id="email" type="email" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="grow">
+            <label>Address</label>
+            <input id="address" required>
+          </div>
+          <div class="grow">
+            <label>Residence Type</label>
+            <select id="residence" required>
+              <option>Apartment</option>
+              <option>Independent House</option>
+              <option>Office</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn-primary" type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+  </main>
+  <footer class="footer">© 2025 Water Bubbly</footer>
+
+  <script>
+    const s = WB.ensureAuthOrRedirect();
+    const user = WB.findUserByPhone(s.phone);
+    const form = document.getElementById('profile-form');
+    ['name','email','address','residence'].forEach(id => document.getElementById(id).value = user?.[id] || '');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      WB.upsertUser({
+        phone: s.phone,
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        address: document.getElementById('address').value,
+        residence: document.getElementById('residence').value,
+      });
+      alert('Saved');
+    });
+  </script>
+</body>
+</html>
+

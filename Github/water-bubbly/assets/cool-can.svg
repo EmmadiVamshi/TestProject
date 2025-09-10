@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="g2" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#9ad1ff"/>
+      <stop offset="100%" stop-color="#cfeaff"/>
+    </linearGradient>
+  </defs>
+  <rect x="28" y="18" width="64" height="84" rx="12" fill="url(#g2)" stroke="#125aa0"/>
+  <rect x="44" y="10" width="32" height="12" rx="4" fill="#125aa0"/>
+  <g fill="none" stroke="#1976d2">
+    <path d="M40 70c6 8 34 8 40 0"/>
+    <path d="M38 58c8 10 36 10 44 0"/>
+  </g>
+  <text x="60" y="98" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#125aa0">Chilled</text>
+  <g fill="#125aa0">
+    <path d="M60 44l3 6h6l-4.5 4 1.7 6-6.2-3.8-6.2 3.8 1.7-6-4.5-4h6z"/>
+  </g>
+  
+</svg>
+

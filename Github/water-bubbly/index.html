@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Water Bubbly - Welcome</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <div class="brand"><img src="assets/logo.svg" alt="logo"/> Water Bubbly</div>
+      <div class="nav-links">
+        <a class="btn-outline" href="#" onclick="event.preventDefault(); window.location.href='pages/products.html'">Browse Products</a>
+      </div>
+    </div>
+  </nav>
+  <main class="container">
+    <div class="card" style="max-width:720px; margin: 24px auto;">
+      <h2>Welcome</h2>
+      <p class="" style="color:#64748b;">Hyperlocal water-can booking. Sign in with your mobile number.</p>
+
+      <div id="step-phone">
+        <form onsubmit="return startOtp(event)">
+          <div class="row">
+            <div class="grow">
+              <label>Mobile Number</label>
+              <input id="phone" type="tel" placeholder="10-digit mobile" required pattern="[0-9]{10}">
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn-primary" type="submit">Send OTP</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="step-otp" class="hidden">
+        <form onsubmit="return verifyOtp(event)">
+          <div class="row">
+            <div class="grow">
+              <label>Enter OTP</label>
+              <input id="otp" type="text" placeholder="4-digit OTP" required pattern="[0-9]{4}">
+              <div id="otp-hint" style="color:#64748b; font-size:12px;">Demo OTP: <span id="otp-code"></span></div>
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn-primary" type="submit">Verify</button>
+            <button class="btn-outline" type="button" onclick="resetFlow()">Change Number</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="step-signup" class="hidden">
+        <h3>Finish Signup</h3>
+        <form onsubmit="return completeSignup(event)">
+          <div class="row">
+            <div class="grow">
+              <label>Name</label>
+              <input id="name" required>
+            </div>
+            <div class="grow">
+              <label>Email</label>
+              <input id="email" type="email" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="grow">
+              <label>Address</label>
+              <input id="address" required>
+            </div>
+            <div class="grow">
+              <label>Residence Type</label>
+              <select id="residence" required>
+                <option value="Apartment">Apartment</option>
+                <option value="Independent House">Independent House</option>
+                <option value="Office">Office</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn-primary" type="submit">Create Account</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">© 2025 Water Bubbly</footer>
+
+  <script>
+    let pendingPhone = null;
+    let demoOtp = null;
+
+    function startOtp(e) {
+      e.preventDefault();
+      const phone = document.getElementById('phone').value;
+      pendingPhone = phone;
+      demoOtp = ('' + Math.floor(1000 + Math.random() * 9000));
+      document.getElementById('otp-code').textContent = demoOtp;
+      document.getElementById('step-phone').classList.add('hidden');
+      document.getElementById('step-otp').classList.remove('hidden');
+      return false;
+    }
+
+    function verifyOtp(e) {
+      e.preventDefault();
+      const otp = document.getElementById('otp').value;
+      if (otp !== demoOtp) { alert('Invalid OTP'); return false; }
+      const existing = WB.findUserByPhone(pendingPhone);
+      if (existing) {
+        WB.setSession(pendingPhone);
+        window.location.href = 'pages/dashboard.html';
+      } else {
+        document.getElementById('step-otp').classList.add('hidden');
+        document.getElementById('step-signup').classList.remove('hidden');
+      }
+      return false;
+    }
+
+    function completeSignup(e) {
+      e.preventDefault();
+      const user = {
+        phone: pendingPhone,
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        address: document.getElementById('address').value,
+        residence: document.getElementById('residence').value,
+      };
+      WB.upsertUser(user);
+      WB.setSession(pendingPhone);
+      window.location.href = 'pages/dashboard.html';
+      return false;
+    }
+
+    function resetFlow() {
+      pendingPhone = null; demoOtp = null;
+      document.getElementById('step-otp').classList.add('hidden');
+      document.getElementById('step-signup').classList.add('hidden');
+      document.getElementById('step-phone').classList.remove('hidden');
+    }
+  </script>
+</body>
+<!--
+  Deliverable: Simple responsive prototype with localStorage persistence.
+-->
+</html>
+
